@@ -86,7 +86,7 @@ jobs:
         run: terraform init -input=false
 
       - name: Terraform Plan
-        run: terraform plan -input=false -out=tfplan -var "project_name=${{ env.PROJECT_NAME }}" -var "location=${{ env.AZURE_LOCATION }}" -var "acr_name=${{ env.ACR_NAME }}" -var "acr_resource_group_name=${{ env.ACR_RESOURCE_GROUP }}" -var "image_tag=v${{ github.run_number }}"
+        run: terraform plan -input=false -out=tfplan -var "project_name=${{ env.PROJECT_NAME }}" -var "location=${{ env.AZURE_LOCATION }}" -var "acr_name=${{ env.ACR_NAME }}" -var "acr_resource_group_name=${{ env.ACR_RESOURCE_GROUP }}" -var "image_tag=v${{ github.run_number }}" -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 
       - name: Terraform Apply
         run: terraform apply -input=false -auto-approve tfplan

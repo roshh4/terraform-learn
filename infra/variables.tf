@@ -28,6 +28,11 @@ variable "image_tag" {
   default     = "latest"
 }
 
+variable "subscription_id" {
+  type        = string
+  description = "Azure subscription ID"
+}
+
 variable "dns_label" {
   type        = string
   description = "Public DNS label for the container instance"
