@@ -4,6 +4,12 @@ variable "project_name" {
   default     = "my-backend"
 }
 
+variable "resource_group_name" {
+  type        = string
+  description = "Existing Azure Resource Group name (defaults to <project_name>-rg)"
+  default     = null
+}
+
 variable "location" {
   type        = string
   description = "Azure region"
