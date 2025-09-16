@@ -1,0 +1,13 @@
+.git
+.github
+**/.DS_Store
+**/node_modules
+**/bin
+**/obj
+**/.terraform
+**/.vscode
+**/.idea
+**/*.log
+**/terraform.tfstate*
+**/.terraform.lock.hcl
+

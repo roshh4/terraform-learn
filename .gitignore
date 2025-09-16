@@ -1,0 +1,28 @@
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+*.log
+
+# Go
+backend
+*.exe
+*.exe~
+*.test
+*.out
+
+# Terraform
+infra/.terraform/
+infra/.terraform.lock.hcl
+infra/terraform.tfstate*
+infra/crash.log
+
+# Docker
+*.tar
+
+# Node (if any)
+node_modules/
+
+# Misc
+*.tmp
+*.swp
