@@ -85,6 +85,10 @@ jobs:
       - name: Terraform Init
         run: terraform init -input=false
 
+      - name: Import existing ACI
+        run: |
+          terraform import azurerm_container_group.ci "/subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.PROJECT_NAME }}-rg/providers/Microsoft.ContainerInstance/containerGroups/${{ env.PROJECT_NAME }}-aci"
+
       - name: Terraform Plan
         run: terraform plan -input=false -out=tfplan -var "project_name=${{ env.PROJECT_NAME }}" -var "location=${{ env.AZURE_LOCATION }}" -var "acr_name=${{ env.ACR_NAME }}" -var "acr_resource_group_name=${{ env.ACR_RESOURCE_GROUP }}" -var "image_tag=v${{ github.run_number }}" -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
 

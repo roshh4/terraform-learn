@@ -18,36 +18,31 @@ resource "azurerm_container_group" "aci" {
   name                = "${var.project_name}-aci"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
-  os_type             = "Linux"
   ip_address_type     = "Public"
-  dns_name_label      = coalesce(var.dns_label, var.project_name)
-
-  identity {
-    type         = "UserAssigned"
-    identity_ids = [data.azurerm_user_assigned_identity.aci_identity.id]
-  }
+  dns_name_label      = var.project_name
+  os_type             = "Linux"
 
   container {
     name   = var.project_name
     image  = "${data.azurerm_container_registry.acr.login_server}/${var.project_name}:${var.image_tag}"
-    cpu    = 0.5
-    memory = 0.5
+    cpu    = "0.5"
+    memory = "1.5"
 
     ports {
       port     = 8080
       protocol = "TCP"
     }
+  }
 
-    environment_variables = {}
+  identity {
+    type = "UserAssigned"
+    identity_ids = [data.azurerm_user_assigned_identity.aci_identity.id]
   }
 
   image_registry_credential {
-    server                     = data.azurerm_container_registry.acr.login_server
-    user_assigned_identity_id  = data.azurerm_user_assigned_identity.aci_identity.id
-  }
-
-  tags = {
-    app = var.project_name
+    server   = data.azurerm_container_registry.acr.login_server
+    username = data.azurerm_container_registry.acr.admin_username
+    password = data.azurerm_container_registry.acr.admin_password
   }
 }
 
@@ -55,5 +50,3 @@ output "fqdn" {
   description = "Public FQDN of the container instance"
   value       = azurerm_container_group.aci.fqdn
 }
-
-

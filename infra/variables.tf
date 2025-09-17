@@ -44,5 +44,3 @@ variable "dns_label" {
   description = "Public DNS label for the container instance"
   default     = null
 }
-
-
