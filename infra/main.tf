@@ -7,16 +7,15 @@ data "azurerm_container_registry" "acr" {
   resource_group_name = var.acr_resource_group_name
 }
 
-resource "azurerm_user_assigned_identity" "aci_identity" {
+data "azurerm_user_assigned_identity" "aci_identity" {
   name                = "${var.project_name}-aci-identity"
-  location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
 resource "azurerm_role_assignment" "acr_pull" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_user_assigned_identity.aci_identity.principal_id
+  principal_id         = data.azurerm_user_assigned_identity.aci_identity.principal_id
 }
 
 resource "azurerm_container_group" "aci" {
@@ -29,7 +28,7 @@ resource "azurerm_container_group" "aci" {
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.aci_identity.id]
+    identity_ids = [data.azurerm_user_assigned_identity.aci_identity.id]
   }
 
   container {
@@ -48,7 +47,7 @@ resource "azurerm_container_group" "aci" {
 
   image_registry_credential {
     server                     = data.azurerm_container_registry.acr.login_server
-    user_assigned_identity_id  = azurerm_user_assigned_identity.aci_identity.id
+    user_assigned_identity_id  = data.azurerm_user_assigned_identity.aci_identity.id
   }
 
   tags = {
